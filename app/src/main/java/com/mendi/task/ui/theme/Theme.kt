@@ -8,29 +8,32 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme =
   darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+    primary = Color(0xFFFFFFFF),
+    onPrimary = Color(0xFF28333E),
+    surface = Color(0xFF141B21),
+    surfaceContainer = Color(0xFF1B232B),
+    surfaceContainerHigh = Color(0xFF26303B),
+    tertiary = Color(0xFFFF8049),
+    onSurface = Color(0xFFFFFFFF),
+    onSurfaceVariant = Color(0xFFA7AEB7),
   )
 
 private val LightColorScheme =
   lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-     */
+    primary = Color(0xFF28333E),
+    onPrimary = Color(0xFFFFFFFF),
+    surface = Color(0xFFFBFBFB),
+    surfaceContainer = Color(0xFFEFF1F3),
+    surfaceContainerHigh = Color(0xFFE3E8EC),
+    tertiary = Color(0xFFE26600),
+    onSurface = Color(0xFF28333E),
+    onSurfaceVariant = Color(0xFF6C7580),
   )
 
 @Composable
@@ -51,9 +54,11 @@ fun MendiTaskTheme(
       else -> LightColorScheme
     }
 
-  MaterialTheme(
-    colorScheme = colorScheme,
-    typography = Typography,
-    content = content,
-  )
+  CompositionLocalProvider(LocalSpacing provides Spacing()) {
+    MaterialTheme(
+      colorScheme = colorScheme,
+      typography = Typography,
+      content = content,
+    )
+  }
 }
