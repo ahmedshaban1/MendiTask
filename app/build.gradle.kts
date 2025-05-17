@@ -2,6 +2,9 @@ plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
+  alias(libs.plugins.google.play.services)
+  alias(libs.plugins.hilt)
+  alias(libs.plugins.ksp)
 }
 
 android {
@@ -34,6 +37,9 @@ android {
   kotlinOptions {
     jvmTarget = "11"
   }
+  hilt {
+    enableAggregatingTask = false
+  }
   buildFeatures {
     compose = true
   }
@@ -48,7 +54,12 @@ dependencies {
   implementation(libs.androidx.ui)
   implementation(libs.androidx.ui.graphics)
   implementation(libs.androidx.ui.tooling.preview)
+  implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.material3)
+  implementation(libs.hilt.android)
+  ksp(libs.hilt.android.compiler)
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.firestore)
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)

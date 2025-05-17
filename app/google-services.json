@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "752630939089",
+    "project_id": "mendi-c1420",
+    "storage_bucket": "mendi-c1420.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752630939089:android:7e8cec26d66aab19aab4f0",
+        "android_client_info": {
+          "package_name": "com.mendi.task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnyNnQjeOhtEh2g0QUewa9jF1LjMS3Jwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
