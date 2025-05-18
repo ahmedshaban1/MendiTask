@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mendi.task.screens.session.presentation.SessionsScreen
 
 @Composable
 fun SetUpNavigation(
@@ -12,7 +13,7 @@ fun SetUpNavigation(
 ) {
   NavHost(navController = navHostController, startDestination = Screen.HomeScreen) {
     composable<Screen.HomeScreen> {
-      Text("Home")
+      SessionsScreen()
     }
     composable<Screen.SettingsScreen> {
       Text("Settings")

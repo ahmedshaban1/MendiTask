@@ -1,4 +1,4 @@
-package com.mendi.task.screens.components
+package com.mendi.task.screens.session.presentation.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -19,13 +19,16 @@ import com.mendi.task.R
 import com.mendi.task.components.Score
 import com.mendi.task.components.SessionHeader
 import com.mendi.task.components.StatusInfo
+import com.mendi.task.screens.session.domain.Session
 import com.mendi.task.ui.theme.MendiTaskTheme
 import com.mendi.task.ui.theme.largeShape
 import com.mendi.task.ui.theme.spacing
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun SessionInfo(
   modifier: Modifier = Modifier,
+  session: Session,
 ) {
   Column(
     modifier = modifier
@@ -63,7 +66,7 @@ fun SessionInfo(
     Spacer(Modifier.height(MaterialTheme.spacing.small))
     Score(
       label = "Score",
-      score = "90",
+      score = session.score.toString(),
     )
   }
 }
@@ -74,6 +77,15 @@ fun SessionInfo(
 @Composable
 private fun ScorePreview() {
   MendiTaskTheme {
-    SessionInfo()
+    SessionInfo(
+      session = Session(
+        sessionDuration = 1,
+        score = 1,
+        timestamp = LocalDateTime.parse("11-11-1993"),
+        focus = 1,
+        bloodFlow = 1,
+        activity = 1,
+      ),
+    )
   }
 }
