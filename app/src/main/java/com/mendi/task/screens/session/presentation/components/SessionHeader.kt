@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -41,7 +41,7 @@ fun SessionHeader(
         contentDescription = duration,
         tint = MaterialTheme.colorScheme.onSurfaceVariant,
       )
-      Spacer(Modifier.height(MaterialTheme.spacing.small))
+      Spacer(Modifier.width(MaterialTheme.spacing.small))
       Text(
         text = duration,
         color = MaterialTheme.colorScheme.onSurface,

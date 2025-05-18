@@ -38,7 +38,8 @@ class SessionsViewModel @Inject constructor(
           _state.update { current ->
             current.copy(
               isLoading = false,
-              sessions = results,
+              sessions = results.drop(1),
+              latestSession = results.firstOrNull(),
             )
           }
         }

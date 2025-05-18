@@ -6,5 +6,6 @@ import com.mendi.task.screens.session.domain.Session
 data class SessionsState(
   val isLoading: Boolean = false,
   val errorMessage: UiText? = null,
+  val latestSession: Session? = null,
   val sessions: List<Session> = emptyList(),
 )

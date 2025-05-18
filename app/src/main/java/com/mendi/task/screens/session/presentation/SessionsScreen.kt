@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mendi.task.R
 import com.mendi.task.components.AppBar
 import com.mendi.task.components.Loading
+import com.mendi.task.screens.session.presentation.components.SessionDetails
 import com.mendi.task.screens.session.presentation.components.SessionInfo
 import com.mendi.task.ui.theme.MendiTaskTheme
 import com.mendi.task.ui.theme.spacing
@@ -71,9 +72,27 @@ fun SessionsContent(
         .padding(horizontal = MaterialTheme.spacing.large),
       verticalArrangement = Arrangement.SpaceBetween,
     ) {
-      LazyColumn(Modifier.weight(1f)) {
-        items(state.sessions) { session ->
-          SessionInfo(session = session)
+      LazyColumn(
+        Modifier.weight(1f),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+      ) {
+        state.latestSession?.let {
+          item {
+            Text(text = stringResource(R.string.latest_results))
+          }
+          item {
+            SessionInfo(session = it) {
+              SessionDetails(session = it)
+            }
+          }
+        }
+        if (state.sessions.isNotEmpty()) {
+          item {
+            Text(text = stringResource(R.string.session_history))
+          }
+          items(state.sessions) { session ->
+            SessionInfo(session = session) {}
+          }
         }
       }
       Button(
