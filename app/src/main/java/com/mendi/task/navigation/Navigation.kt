@@ -1,11 +1,11 @@
 package com.mendi.task.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mendi.task.screens.session.presentation.SessionsScreen
+import com.mendi.task.screens.settings.presentation.SettingsScreen
 
 @Composable
 fun SetUpNavigation(
@@ -13,10 +13,14 @@ fun SetUpNavigation(
 ) {
   NavHost(navController = navHostController, startDestination = Screen.HomeScreen) {
     composable<Screen.HomeScreen> {
-      SessionsScreen()
+      SessionsScreen(
+        onNavigate = {
+          navHostController.navigate(Screen.SettingsScreen)
+        },
+      )
     }
     composable<Screen.SettingsScreen> {
-      Text("Settings")
+      SettingsScreen()
     }
   }
 }

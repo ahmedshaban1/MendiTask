@@ -2,6 +2,7 @@ package com.mendi.task.screens.session.presentation
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,12 +34,14 @@ import com.mendi.task.ui.theme.spacing
 @Composable
 fun SessionsScreen(
   modifier: Modifier = Modifier,
+  onNavigate: () -> Unit,
   viewModel: SessionsViewModel = hiltViewModel(),
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
   SessionsContent(
     modifier = modifier,
     state = state,
+    onNavigate = onNavigate,
     onCreateSession = {
       viewModel.createSession()
     },
@@ -50,10 +53,13 @@ fun SessionsContent(
   modifier: Modifier = Modifier,
   state: SessionsState,
   onCreateSession: () -> Unit,
+  onNavigate: () -> Unit,
 ) {
   Scaffold(
-    topBar = { AppBar() },
-    modifier = modifier.fillMaxSize(),
+    topBar = { AppBar(onNavigate = onNavigate) },
+    modifier = modifier
+      .fillMaxSize()
+      .background(MaterialTheme.colorScheme.surface),
   ) { paddingValues ->
     AnimatedVisibility(state.isLoading) {
       Loading(
@@ -116,6 +122,10 @@ fun SessionsContent(
 @Composable
 private fun ScorePreview() {
   MendiTaskTheme {
-    SessionsContent(state = SessionsState()) {}
+    SessionsContent(
+      state = SessionsState(),
+      onNavigate = {},
+      onCreateSession = {},
+    )
   }
 }

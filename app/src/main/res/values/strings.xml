@@ -14,4 +14,7 @@
   <string name="blood_flow">Blood Low</string>
   <string name="focus">Focus</string>
   <string name="score">Score</string>
+  <string name="settings">settings</string>
+  <string name="settings_title">Settings</string>
+  <string name="close">close</string>
 </resources>
