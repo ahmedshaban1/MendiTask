@@ -1,9 +1,12 @@
 package com.mendi.task.screens.settings.data.entities
 
+import com.google.firebase.firestore.Exclude
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class GameEntity(
+  @get:Exclude @set:Exclude
+  var id: String? = null,
   val name: String = "",
   val settingsGroups: List<SettingsGroupEntity> = emptyList(),
   val order: Int = 0,
@@ -17,7 +20,7 @@ data class SettingsGroupEntity(
 
 @Serializable
 data class AggregatedSettingsEntity(
-  val isMultiSelect: Boolean = false,
+  val multiSelect: Boolean = false,
   val settings: List<SettingsItemEntity> = emptyList(),
 )
 
@@ -40,7 +43,6 @@ val games: List<GameEntity> = listOf(
   GameEntity(name = "Rolling Hills", settingsGroups = getGroups("Mendi Logo"), order = 3),
 )
 
-// generate group
 fun getGroups(
   targetGame: String,
 ): List<SettingsGroupEntity> {
@@ -49,14 +51,14 @@ fun getGroups(
       name = "Avatar",
       aggregatedSettings = listOf(
         AggregatedSettingsEntity(
-          isMultiSelect = false,
+          multiSelect = false,
           settings = listOf(
             SettingsItemEntity(label = targetGame, selected = false, type = SettingsTypeEntity.SELECT),
             SettingsItemEntity(label = "Circle", selected = false, type = SettingsTypeEntity.SELECT),
           ),
         ),
         AggregatedSettingsEntity(
-          isMultiSelect = false,
+          multiSelect = true,
           settings = listOf(
             SettingsItemEntity(label = "Glow effect", selected = false, type = SettingsTypeEntity.CHECK),
             SettingsItemEntity(label = "Avatar spin", selected = false, type = SettingsTypeEntity.CHECK),
@@ -68,7 +70,7 @@ fun getGroups(
       name = "Immersion settings",
       aggregatedSettings = listOf(
         AggregatedSettingsEntity(
-          isMultiSelect = false,
+          multiSelect = true,
           settings = listOf(
             SettingsItemEntity(label = "Vignette", selected = false, type = SettingsTypeEntity.CHECK),
             SettingsItemEntity(label = "In-game metrics", selected = false, type = SettingsTypeEntity.CHECK),

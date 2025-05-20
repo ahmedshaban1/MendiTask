@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.mendi.task.R
 import com.mendi.task.components.Score
 import com.mendi.task.components.SessionHeader
+import com.mendi.task.core.displayDate
 import com.mendi.task.screens.session.domain.Session
 import com.mendi.task.ui.theme.MendiTaskTheme
 import com.mendi.task.ui.theme.largeShape
@@ -37,7 +38,10 @@ fun SessionInfo(
       .padding(MaterialTheme.spacing.xLarge),
     horizontalAlignment = Alignment.CenterHorizontally,
   ) {
-    SessionHeader(time = "${session.timestamp.time}", duration = "${session.sessionDuration} min")
+    SessionHeader(
+      time = session.timestamp.displayDate(),
+      duration = stringResource(R.string.session_duration, session.sessionDuration),
+    )
     Spacer(modifier.height(MaterialTheme.spacing.medium))
     content()
     Score(

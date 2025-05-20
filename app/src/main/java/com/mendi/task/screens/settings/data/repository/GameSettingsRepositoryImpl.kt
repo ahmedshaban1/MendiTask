@@ -8,6 +8,7 @@ import com.mendi.task.core.domain.Result
 import com.mendi.task.screens.settings.data.entities.GameEntity
 import com.mendi.task.screens.settings.data.entities.games
 import com.mendi.task.screens.settings.data.mappers.toGame
+import com.mendi.task.screens.settings.data.mappers.toGameEntity
 import com.mendi.task.screens.settings.domain.Game
 import com.mendi.task.screens.settings.domain.GameSettingsRepository
 import kotlinx.coroutines.channels.awaitClose
@@ -30,7 +31,7 @@ class GameSettingsRepositoryImpl @Inject constructor(private val db: FirebaseFir
 
           if (snapshot != null) {
             val games = snapshot.documents.mapNotNull {
-              it.toObject(GameEntity::class.java)
+              it.toObject(GameEntity::class.java)?.toGame(it.id)
             }
             if (games.isEmpty()) {
               createGamesSettings(
@@ -39,13 +40,25 @@ class GameSettingsRepositoryImpl @Inject constructor(private val db: FirebaseFir
                 },
               )
             } else {
-              trySend(Result.Success(games.map { it.toGame() }))
+              trySend(Result.Success(games))
             }
           }
         }
 
       awaitClose { listener.remove() }
     }
+
+  override suspend fun updateGameSettings(
+    game: Game,
+  ) = callbackFlow<Result<Any, DataError.Remote>> {
+    db.collection(DOCUMENT_NAME)
+      .document(game.id!!)
+      .set(game.toGameEntity())
+      .addOnFailureListener { e ->
+        trySend(Result.Error(SERVER))
+      }
+    awaitClose()
+  }
 
   private fun createGamesSettings(
     onError: () -> Unit,

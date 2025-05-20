@@ -2,6 +2,7 @@ package com.mendi.task.screens.session.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mendi.task.R
 import com.mendi.task.core.domain.onError
 import com.mendi.task.core.domain.onSuccess
 import com.mendi.task.core.presentation.toUiText
@@ -40,6 +41,11 @@ class SessionsViewModel @Inject constructor(
               isLoading = false,
               sessions = results.drop(1),
               latestSession = results.firstOrNull(),
+              errorMessage = if (results.isEmpty()) {
+                R.string.empty_sessions
+              } else {
+                null
+              },
             )
           }
         }

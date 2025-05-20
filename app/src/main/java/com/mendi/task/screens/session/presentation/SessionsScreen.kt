@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mendi.task.R
 import com.mendi.task.components.AppBar
 import com.mendi.task.components.Loading
+import com.mendi.task.components.Message
 import com.mendi.task.screens.session.presentation.components.SessionDetails
 import com.mendi.task.screens.session.presentation.components.SessionInfo
 import com.mendi.task.ui.theme.MendiTaskTheme
@@ -58,59 +60,69 @@ fun SessionsContent(
   Scaffold(
     topBar = { AppBar(onNavigate = onNavigate) },
     modifier = modifier
-      .fillMaxSize()
-      .background(MaterialTheme.colorScheme.surface),
+      .fillMaxSize(),
   ) { paddingValues ->
-    AnimatedVisibility(state.isLoading) {
-      Loading(
+    Box(
+      Modifier
+        .fillMaxSize()
+        .background(color = MaterialTheme.colorScheme.surface),
+    ) {
+      AnimatedVisibility(state.isLoading) {
+        Loading(
+          modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
+          title = stringResource(R.string.loading),
+        )
+      }
+      AnimatedVisibility(state.errorMessage != null) {
+        state.errorMessage?.let {
+          Message(stringResource(it))
+        }
+      }
+      Column(
         modifier = Modifier
           .fillMaxSize()
-          .padding(paddingValues),
-        title = stringResource(R.string.loading),
-      )
-    }
-    Column(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(
-          paddingValues,
-        )
-        .padding(horizontal = MaterialTheme.spacing.large),
-      verticalArrangement = Arrangement.SpaceBetween,
-    ) {
-      LazyColumn(
-        Modifier.weight(1f),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+          .padding(
+            paddingValues,
+          )
+          .padding(horizontal = MaterialTheme.spacing.large),
+        verticalArrangement = Arrangement.SpaceBetween,
       ) {
-        state.latestSession?.let {
-          item {
-            Text(text = stringResource(R.string.latest_results))
+        LazyColumn(
+          Modifier.weight(1f),
+          verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
+        ) {
+          state.latestSession?.let {
+            item {
+              Text(text = stringResource(R.string.latest_results))
+            }
+            item {
+              SessionInfo(session = it) {
+                SessionDetails(session = it)
+              }
+            }
           }
-          item {
-            SessionInfo(session = it) {
-              SessionDetails(session = it)
+          if (state.sessions.isNotEmpty()) {
+            item {
+              Text(text = stringResource(R.string.session_history))
+            }
+            items(state.sessions) { session ->
+              SessionInfo(session = session) {}
             }
           }
         }
-        if (state.sessions.isNotEmpty()) {
-          item {
-            Text(text = stringResource(R.string.session_history))
-          }
-          items(state.sessions) { session ->
-            SessionInfo(session = session) {}
-          }
+        Button(
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
+          onClick = onCreateSession,
+        ) {
+          Text(
+            text = stringResource(R.string.create_session),
+            style = MaterialTheme.typography.labelLarge,
+          )
         }
-      }
-      Button(
-        modifier = Modifier
-          .fillMaxWidth()
-          .height(56.dp),
-        onClick = onCreateSession,
-      ) {
-        Text(
-          text = stringResource(R.string.create_session),
-          style = MaterialTheme.typography.labelLarge,
-        )
       }
     }
   }

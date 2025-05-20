@@ -17,4 +17,6 @@
   <string name="settings">settings</string>
   <string name="settings_title">Settings</string>
   <string name="close">close</string>
+  <string name="session_duration">%1$s min</string>
+  <string name="empty_sessions">You have no results yet</string>
 </resources>

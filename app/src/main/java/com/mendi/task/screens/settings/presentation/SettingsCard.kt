@@ -27,7 +27,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.datasource.CollectionPreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import com.google.firebase.firestore.Exclude
 import com.mendi.task.components.TertiarySwitch
 import com.mendi.task.ui.theme.MendiTaskTheme
 import com.mendi.task.ui.theme.largeShape
@@ -43,7 +42,6 @@ object SettingsCard {
   data class Check(
     override val label: String = "",
     val checked: Boolean = false,
-    @get:Exclude
     val onChecked: (Boolean) -> Unit,
   ) : Type
 
@@ -51,7 +49,6 @@ object SettingsCard {
   data class Select(
     override val label: String = "",
     val checked: Boolean = false,
-    @get:Exclude
     val onClick: () -> Unit,
   ) : Type
 

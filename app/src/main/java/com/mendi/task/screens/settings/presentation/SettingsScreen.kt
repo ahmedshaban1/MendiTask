@@ -1,5 +1,6 @@
 package com.mendi.task.screens.settings.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,9 +45,10 @@ fun SettingsScreen(
   viewModel: SettingsViewModel = hiltViewModel(),
 ) {
   val state by viewModel.state.collectAsStateWithLifecycle()
+  val context = LocalContext.current
 
   Scaffold(
-    modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+    modifier = Modifier,
     topBar = {
       CenterAlignedTopAppBar(
         title = {
@@ -60,11 +63,21 @@ fun SettingsScreen(
   ) { padding ->
     Box(
       modifier = modifier
+        .background(color = MaterialTheme.colorScheme.surface)
         .padding(padding)
         .padding(horizontal = MaterialTheme.spacing.large)
         .fillMaxSize(),
     ) {
-      SettingsContent(state = state)
+      state.errorMessage?.let {
+        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        viewModel.removeErrorMessage()
+      }
+      SettingsContent(
+        state = state,
+        onUpdateSetting = {
+          viewModel.updateSettingItem(it)
+        },
+      )
     }
   }
 }
@@ -73,6 +86,7 @@ fun SettingsScreen(
 fun SettingsContent(
   modifier: Modifier = Modifier,
   state: GamesSettingsState,
+  onUpdateSetting: (updateSettingState: UpdateSettingState) -> Unit,
 ) {
   var currentPage by remember { mutableIntStateOf(0) }
   val scope = rememberCoroutineScope()
@@ -102,6 +116,10 @@ fun SettingsContent(
           }
         }
       },
+
+      onUpdateSetting = { updateSettingState ->
+        onUpdateSetting(updateSettingState.copy(gameIndex = page))
+      },
     )
   }
 }
@@ -113,6 +131,7 @@ fun GameSettingsContent(
   cover: Int,
   onNextGame: () -> Unit,
   onPreviousGame: () -> Unit,
+  onUpdateSetting: (updateSettingState: UpdateSettingState) -> Unit,
 ) {
   Column(
     modifier = modifier
@@ -129,26 +148,42 @@ fun GameSettingsContent(
       onNextGame = onNextGame,
       onPreviousGame = onPreviousGame,
     )
-    game.settingsGroups.forEach { settingsGroup ->
+    game.settingsGroups.forEachIndexed { settingsGroupIndex, settingsGroup ->
       Text(
         text = settingsGroup.name,
         style = MaterialTheme.typography.labelLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
       )
-      settingsGroup.aggregatedSettings.forEach { aggregatedSetting ->
+      settingsGroup.aggregatedSettings.forEachIndexed { aggregatedSettingIndex, aggregatedSetting ->
         SettingsCard(
-          settings = aggregatedSetting.settings.map {
-            when (it.type) {
+          settings = aggregatedSetting.settings.mapIndexed { settingItemIndex, settingItem ->
+            when (settingItem.type) {
               SettingsType.SELECT -> SettingsCard.Select(
-                label = it.label,
-                checked = it.selected,
-                onClick = {},
+                label = settingItem.label,
+                checked = settingItem.selected,
+                onClick = {
+                  onUpdateSetting(
+                    UpdateSettingState(
+                      settingsGroupIndex = settingsGroupIndex,
+                      aggregatedSettingIndex = aggregatedSettingIndex,
+                      settingItemIndex = settingItemIndex,
+                    ),
+                  )
+                },
               )
 
               SettingsType.CHECK -> SettingsCard.Check(
-                label = it.label,
-                checked = it.selected,
-                onChecked = {},
+                label = settingItem.label,
+                checked = settingItem.selected,
+                onChecked = {
+                  onUpdateSetting(
+                    UpdateSettingState(
+                      settingsGroupIndex = settingsGroupIndex,
+                      aggregatedSettingIndex = aggregatedSettingIndex,
+                      settingItemIndex = settingItemIndex,
+                    ),
+                  )
+                },
               )
             }
           },

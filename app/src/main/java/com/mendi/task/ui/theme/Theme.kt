@@ -22,6 +22,7 @@ private val DarkColorScheme =
     tertiary = Color(0xFFFF8049),
     onSurface = Color(0xFFFFFFFF),
     onSurfaceVariant = Color(0xFFA7AEB7),
+    surfaceContainerLowest = Color(0xFF6C7580),
   )
 
 private val LightColorScheme =
@@ -34,6 +35,7 @@ private val LightColorScheme =
     tertiary = Color(0xFFE26600),
     onSurface = Color(0xFF28333E),
     onSurfaceVariant = Color(0xFF6C7580),
+    surfaceContainerLowest = Color(0xFF28333E),
   )
 
 @Composable

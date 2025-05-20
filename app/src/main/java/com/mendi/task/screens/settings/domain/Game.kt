@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Game(
   val name: String = "",
+  val id: String? = null,
   val settingsGroups: List<SettingsGroup> = emptyList(),
   val order: Int = 0,
 )
@@ -17,7 +18,7 @@ data class SettingsGroup(
 
 @Serializable
 data class AggregatedSettings(
-  val isMultiSelect: Boolean = false,
+  val multiSelect: Boolean = false,
   val settings: List<SettingsItem> = emptyList(),
 )
 
@@ -31,5 +32,5 @@ enum class SettingsType {
 data class SettingsItem(
   val type: SettingsType = SettingsType.SELECT,
   val label: String = "",
-  val selected: Boolean = false,
+  var selected: Boolean = false,
 )

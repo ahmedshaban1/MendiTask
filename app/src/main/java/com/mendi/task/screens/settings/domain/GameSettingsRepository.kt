@@ -6,4 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface GameSettingsRepository {
   suspend fun getGamesSettings(): Flow<Result<List<Game>, DataError.Remote>>
+  suspend fun updateGameSettings(
+    game: Game,
+  ): Flow<Result<Any, DataError.Remote>>
 }

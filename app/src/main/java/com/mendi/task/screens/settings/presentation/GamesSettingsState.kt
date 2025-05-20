@@ -10,4 +10,12 @@ data class GamesSettingsState(
     R.drawable.flower_hills,
     R.drawable.rolling_hills,
   ),
+  val errorMessage: Int? = null,
+)
+
+data class UpdateSettingState(
+  val gameIndex: Int = 0,
+  val settingsGroupIndex: Int,
+  val aggregatedSettingIndex: Int,
+  val settingItemIndex: Int,
 )

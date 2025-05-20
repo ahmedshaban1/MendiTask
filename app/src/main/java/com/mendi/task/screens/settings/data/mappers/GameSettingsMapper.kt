@@ -11,8 +11,12 @@ import com.mendi.task.screens.settings.domain.SettingsGroup
 import com.mendi.task.screens.settings.domain.SettingsItem
 import com.mendi.task.screens.settings.domain.SettingsType
 
-fun GameEntity.toGame(): Game {
+// Game Entity to game
+fun GameEntity.toGame(
+  id: String,
+): Game {
   return Game(
+    id = id,
     order = order,
     name = name,
     settingsGroups = settingsGroups.map { it.toSettingsGroup() },
@@ -28,7 +32,7 @@ fun SettingsGroupEntity.toSettingsGroup(): SettingsGroup {
 
 fun AggregatedSettingsEntity.toAggregatedSettings(): AggregatedSettings {
   return AggregatedSettings(
-    isMultiSelect = isMultiSelect,
+    multiSelect = multiSelect,
     settings = settings.map { it.toSettingsItem() },
   )
 }
@@ -45,5 +49,44 @@ fun SettingsTypeEntity.toSettingsType(): SettingsType {
   return when (this) {
     SettingsTypeEntity.SELECT -> SettingsType.SELECT
     SettingsTypeEntity.CHECK -> SettingsType.CHECK
+  }
+}
+
+// Game to Game Entity
+
+fun Game.toGameEntity(): GameEntity {
+  return GameEntity(
+    order = order,
+    name = name,
+    settingsGroups = settingsGroups.map { it.toSettingsGroup() },
+  )
+}
+
+fun SettingsGroup.toSettingsGroup(): SettingsGroupEntity {
+  return SettingsGroupEntity(
+    name = name,
+    aggregatedSettings = aggregatedSettings.map { it.toAggregatedSettings() },
+  )
+}
+
+fun AggregatedSettings.toAggregatedSettings(): AggregatedSettingsEntity {
+  return AggregatedSettingsEntity(
+    multiSelect = multiSelect,
+    settings = settings.map { it.toSettingsItem() },
+  )
+}
+
+fun SettingsItem.toSettingsItem(): SettingsItemEntity {
+  return SettingsItemEntity(
+    label = label,
+    selected = selected,
+    type = type.toSettingsType(),
+  )
+}
+
+fun SettingsType.toSettingsType(): SettingsTypeEntity {
+  return when (this) {
+    SettingsType.SELECT -> SettingsTypeEntity.SELECT
+    SettingsType.CHECK -> SettingsTypeEntity.CHECK
   }
 }

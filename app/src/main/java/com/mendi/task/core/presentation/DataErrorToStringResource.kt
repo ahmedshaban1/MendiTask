@@ -3,7 +3,7 @@ package com.mendi.task.core.presentation
 import com.mendi.task.R
 import com.mendi.task.core.domain.DataError
 
-fun DataError.toUiText(): UiText {
+fun DataError.toUiText(): Int {
   val stringRes = when (this) {
     DataError.Remote.REQUEST_TIMEOUT -> R.string.error_request_timeout
     DataError.Remote.TOO_MANY_REQUESTS -> R.string.error_too_many_requests
@@ -13,5 +13,5 @@ fun DataError.toUiText(): UiText {
     DataError.Remote.UNKNOWN -> R.string.error_unknown
   }
 
-  return UiText.StringResourceId(stringRes)
+  return stringRes
 }
